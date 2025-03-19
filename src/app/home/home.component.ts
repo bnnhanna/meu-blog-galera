@@ -1,21 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importe o CommonModule
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Importe o RouterModule
-import { PostService, Post } from '../services/post.service'; // Importe o serviço e a interface Post
+import { PostService, Post } from '../services/post.service';
 
 @Component({
   selector: 'app-home',
+  standalone: true,
+  imports: [CommonModule, RouterModule], // Adicione o RouterModule aqui
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  standalone: true, // Mantenha esta linha
-  imports: [CommonModule, RouterModule] // Importe o CommonModule e o RouterModule aqui
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  posts: Post[] = []; // Array para armazenar os posts
+  posts: Post[] = [];
 
-  constructor(private postService: PostService) { } // Injete o PostService
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.posts = this.postService.getPosts(); // Obtenha os posts ao inicializar o componente
+    this.loadPosts();
+  }
+
+  // Carrega os posts da API
+  loadPosts(): void {
+    this.postService.getPosts().subscribe(
+      (data: Post[]) => this.posts = data,
+      (error: any) => console.error('Erro ao carregar posts:', error)
+    );
+  }
+
+  // Exclui um post
+  deletePost(id: number): void {
+    this.postService.deletePost(id).subscribe(
+      () => this.loadPosts(),
+      (error: any) => console.error('Erro ao excluir post:', error)
+    );
   }
 }

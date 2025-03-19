@@ -1,15 +1,21 @@
-<div *ngIf="post">
-  <h1>{{ post.title }}</h1>
-  <p>{{ post.content }}</p>
-  <!-- Player do Spotify -->
-  <iframe
-    [src]="post.spotifyUrl"
-    width="300"
-    height="380"
-    frameborder="0"
-    allowtransparency="true"
-    allow="encrypted-media">
-  </iframe>
-  <br>
-  <a routerLink="/">Voltar para Home</a> <!-- Link para a página inicial -->
+<div *ngIf="post" class="container mt-5">
+  <h1 class="text-center">{{ post.title }}</h1>
+  <p class="lead">{{ post.content }}</p>
+  <div class="embed-responsive embed-responsive-16by9">
+    <iframe
+      [src]="getSafeUrl(post.spotifyUrl)"
+      class="embed-responsive-item"
+      frameborder="0"
+      allowtransparency="true"
+      allow="encrypted-media">
+    </iframe>
+  </div>
 </div>
+<iframe
+  src=""
+  width="300"
+  height="380"
+  frameborder="0"
+  allowtransparency="true"
+  allow="encrypted-media">
+</iframe>
